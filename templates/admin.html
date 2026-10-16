@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirmações · Yasmim</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+.adm{max-width:1000px;margin:0 auto;padding:40px 16px}
+.adm h1{font-family:'Great Vibes',cursive;font-size:3rem;color:var(--g1);text-align:center}
+.tot{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:20px 0}
+.tot div{background:linear-gradient(160deg,var(--g1),var(--g2));color:#fff;border-radius:18px;padding:16px 28px;text-align:center}
+.tot b{display:block;font-size:2rem}
+.wrap{overflow-x:auto;background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(31,74,55,.12)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--g4)}
+th{background:var(--g5);color:var(--g1)}
+.sim{color:#2f6b50;font-weight:600}.nao{color:#b03a3a;font-weight:600}
+.dl{text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<main class="adm">
+  <h1>Confirmações 💚</h1>
+  <div class="tot">
+    <div><b>{{ t_piscina }}</b>pessoas na piscina</div>
+    <div><b>{{ t_festa }}</b>pessoas na festa</div>
+    <div><b>{{ respostas|length }}</b>respostas</div>
+  </div>
+  <div class="wrap"><table>
+    <tr><th>Data</th><th>Convite</th><th>Nome</th><th>Vai?</th><th>Pessoas</th><th>Recado</th></tr>
+    {% for r in respostas|reverse %}
+    <tr>
+      <td>{{ r.date }}</td>
+      <td>{{ '🏊 Piscina' if r.convite == 'piscina' else '🥂 Festa' }}</td>
+      <td>{{ r.name }}</td>
+      <td class="{{ r.status }}">{{ 'Sim' if r.status == 'sim' else 'Não' }}</td>
+      <td>{{ r.guests }}</td>
+      <td>{{ r.message or '—' }}</td>
+    </tr>
+    {% else %}<tr><td colspan="6" style="text-align:center">Ninguém respondeu ainda 💚</td></tr>{% endfor %}
+  </table></div>
+  <p class="dl"><a class="btn" href="{{ url_for('admin_csv', token=token) }}">Baixar planilha (CSV)</a></p>
+</main>
+</body>
+</html>
